@@ -13,20 +13,30 @@ int main(){
         a = get_String();
         char* b = reverse(a);
         printf("%s\n%s\n\n", a, b);
+        free(b);
     };
     system("pause");
     return 0;
 }
 
-char* reverse(char* string){
+char* reverse(char* a){
+    char* string = a;
     char* b = (char*)malloc(strlen(string) * sizeof(char));
-    if(b == NULL)
+    int k = 0, size = 0;
+    if(b == NULL || string == NULL)
         printf("sosNULL");
-    for(int i = strlen(string) - 1; i >= 0; i--, b++){
-        *b = *(string + i);
+    while(*string != '\0'){
+        if(*string == ' ' && *(b-1) == ' ')
+            string++;
+        else{
+            *b = *string;
+            b++;
+            string++;
+            size++;
+        }
     }
     *b = '\0';
-    return b - strlen(string);
+    return b - size;
 }
 
 char* get_String(){
