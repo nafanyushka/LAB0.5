@@ -3,6 +3,7 @@
 #include <string.h>
 
 char* get_String();
+char* reverse(char*);
 
 int main(){
 
@@ -10,10 +11,22 @@ int main(){
     char* a = "!";
     while(*a != '\0'){
         a = get_String();
-        printf("%s\n", a);
+        char* b = reverse(a);
+        printf("%s\n%s\n\n", a, b);
     };
     system("pause");
     return 0;
+}
+
+char* reverse(char* string){
+    char* b = (char*)malloc(strlen(string) * sizeof(char));
+    if(b == NULL)
+        printf("sosNULL");
+    for(int i = strlen(string) - 1; i >= 0; i--, b++){
+        *b = *(string + i);
+    }
+    *b = '\0';
+    return b - strlen(string);
 }
 
 char* get_String(){
