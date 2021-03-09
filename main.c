@@ -12,7 +12,7 @@ int main(){
     while(*a != '\0'){
         a = get_String();
         char* b = reverse(a);
-        printf("%s\n%s\n\n", a, b);
+        printf("\nStart: %s\nFinal: %s\n\n", a, b);
         free(b);
     };
     system("pause");
@@ -21,22 +21,47 @@ int main(){
 
 char* reverse(char* a){
     char* string = a;
-    char* b = (char*)malloc(strlen(string) * sizeof(char));
+    char* b = (char*)malloc(1 + strlen(string) * sizeof(char));
     int k = 0, size = 0;
-    if(b == NULL || string == NULL)
+    if(b == NULL || string == NULL){
         printf("sosNULL");
+        return "error!";
+    }
+
+    printf("Let's go!\n");
+
     while(*string != '\0'){
-        if(*string == ' ' && *(b-1) == ' ')
+        if(*string == ' ') {
             string++;
+            k = 0;
+            printf("OBNULENIE!\n");
+        }
         else{
-            *b = *string;
-            b++;
-            string++;
-            size++;
+            if(*(string + 1) == ' '){
+                for(int i = 0; i <= k; i++, b++, size++){
+                    *b = *(string - i);
+                    printf("\" \" HERE: %c\n", *b);
+                }
+                *b = ' ';
+                b++;
+                size++;
+                string++;
+            }
+            if(*(string + 1) == '\0'){
+                k++;
+                for(int i = 0; i <= k; i++, b++, size++){
+                    *b = *(string - i);
+                    printf("\\0 number %d HERE: %c\n", k, *b);
+                }
+                *b = '\0';
+                return b - size;
+            }
+            else{
+                string++;
+                k++;
+            }
         }
     }
-    *b = '\0';
-    return b - size;
 }
 
 char* get_String(){
