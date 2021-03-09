@@ -28,20 +28,20 @@ char* reverse(char* a){
         return "error!";
     }
 
-    printf("Let's go!\n");
+//    printf("Let's go!\n");
 
     while(*string != '\0'){
         if(*string == ' ') {
             string++;
             k = 0;
-            printf("OBNULENIE!\n");
+//            printf("OBNULENIE!\n");
         }
         else{
             if(*(string + 1) == ' ' || *(string + 1) == '\0') {
                 if (*(string + 1) == ' ') {
                     for (int i = 0; i <= k; i++, b++, size++) {
                         *b = *(string - i);
-                        printf("\" \" HERE: %c\n", *b);
+//                        printf("\" \" HERE: %c\n", *b);
                     }
                     *b = ' ';
                     b++;
@@ -52,12 +52,12 @@ char* reverse(char* a){
                     k++;
                     for (int i = 0; i < k; i++, b++, size++) {
                         *b = *(string - i);
-                        printf("\\0 number %d/%d HERE: %c\n", i, k, *b);
+//                        printf("\\0 number %d/%d HERE: %c\n", i, k, *b);
                     }
                     *b = '\0';
                     b = b - size;
                     b = (char*)realloc(b, strlen(b));
-                    printf("\n size = %d\n", size);
+//                    printf("\n size = %d\n", size);
                     return b;
                 }
             }
