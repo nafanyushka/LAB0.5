@@ -21,7 +21,7 @@ int main(){
 
 char* reverse(char* a){
     char* string = a;
-    char* b = (char*)malloc(1 + strlen(string) * sizeof(char));
+    char* b = (char*)malloc(10 + strlen(string) * sizeof(char));
     int k = 0, size = 0;
     if(b == NULL || string == NULL){
         printf("sosNULL");
@@ -37,24 +37,28 @@ char* reverse(char* a){
             printf("OBNULENIE!\n");
         }
         else{
-            if(*(string + 1) == ' '){
-                for(int i = 0; i <= k; i++, b++, size++){
-                    *b = *(string - i);
-                    printf("\" \" HERE: %c\n", *b);
+            if(*(string + 1) == ' ' || *(string + 1) == '\0') {
+                if (*(string + 1) == ' ') {
+                    for (int i = 0; i <= k; i++, b++, size++) {
+                        *b = *(string - i);
+                        printf("\" \" HERE: %c\n", *b);
+                    }
+                    *b = ' ';
+                    b++;
+                    size++;
+                    string++;
                 }
-                *b = ' ';
-                b++;
-                size++;
-                string++;
-            }
-            if(*(string + 1) == '\0'){
-                k++;
-                for(int i = 0; i <= k; i++, b++, size++){
-                    *b = *(string - i);
-                    printf("\\0 number %d HERE: %c\n", k, *b);
+                if (*(string + 1) == '\0') {
+                    k++;
+                    for (int i = 0; i <= k; i++, b++, size++) {
+                        *b = *(string - i);
+                        printf("\\0 number %d HERE: %c\n", k, *b);
+                    }
+                    *b = '\0';
+                    b = b - size;
+                    b = (char*)realloc(b, strlen(b));
+                    return b;
                 }
-                *b = '\0';
-                return b - size;
             }
             else{
                 string++;
