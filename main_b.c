@@ -16,10 +16,10 @@ Node* strict(char*);
 
 int main(){
     Node * list = NULL;
-    printf("Input your string: ");
-    char* a = get_String();
+//    char* a = get_String();
     printf("Your string: ");
-    list = strict(a);
+    list = strict(get_String());
+    printf("Only digits: ");
     print(list);
     system("pause");
     return 0;
@@ -41,15 +41,22 @@ void print(Node* first){
 Node* strict(char* a){
     Node* list = (Node*)malloc(sizeof(Node));
     Node* p = list;
+    int i = *a;
     while(*a != '\0'){
-        list->data = *a;
-        list->next = (Node*)malloc(sizeof(Node));
+        if(48 <= i && i <= 57)
+//        if(*a == '0'|| *a == '1' || *a == '2' || *a == '3' || *a == '4' || *a == '5' || *a == '6' || *a == '7' || *a == '8' || *a == '9')
+        {
+            list->data = *a;
+            list->next = (Node *) malloc(sizeof(Node));
 //        printf("%c\n", list->data);
-        list = list->next;
+            list = list->next;
+        }
         a++;
+        i = *a;
     }
     list->next = NULL;
 //    printf("END OF HYPE!\n");
+    free(a);
     return p;
 }
 
