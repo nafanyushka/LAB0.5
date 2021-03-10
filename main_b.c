@@ -54,6 +54,7 @@ void print(Node* first){
 void factoring(Node* a, Node* chet, Node* ne_chet){
     Node* List_chet = chet;
     Node* List_ne_chet = ne_chet;
+    Node* last_space;
     char helper1 = ' ', helper = ' ';
     for(Node* p = a; p->next != NULL; p = p->next){
         if((((int)p->data)%2 == 1)){
@@ -71,12 +72,14 @@ void factoring(Node* a, Node* chet, Node* ne_chet){
         if(p->data == ' ' && helper1 != ' ') {
             List_chet->data = ' ';
             helper1 = List_chet->data;
+            last_space = List_chet;
             List_chet->next = (Node *) malloc(sizeof(Node));
             List_chet = List_chet->next;
         }
         if(p->data == ' ' && helper != ' '){
             List_ne_chet->data = ' ';
             helper = List_ne_chet->data;
+            last_space = List_ne_chet;
             List_ne_chet->next = (Node*)malloc(sizeof(Node));
             List_ne_chet = List_ne_chet->next;
         }
@@ -84,6 +87,8 @@ void factoring(Node* a, Node* chet, Node* ne_chet){
     }
     List_ne_chet->next = NULL;
     List_chet->next = NULL;
+    if(last_space->next->next == NULL)
+        last_space->next = NULL;
 
 }
 
