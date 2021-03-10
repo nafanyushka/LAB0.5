@@ -9,10 +9,13 @@ int main(){
 
     int strings = 0;
     char* a = "!";
-    while(*a != '\0'){
+    while(*a != EOF){
+        printf("Enter string: ");
         a = get_String();
+        if(*a == '\0')
+            continue;
         char* b = reverse(a);
-        printf("\nStart: %s\nFinal: %s\n\n", a, b);
+        printf("\nStart: %s\nFinal: \"%s\"\n\n", a, b);
         free(b);
     };
     system("pause");
@@ -89,5 +92,9 @@ char* get_String(){
             strcat(a, buf);
         }
     }while(n > 0);
+    if(*(a + strlen(a) - 1) == ' '){
+        for(int i = strlen(a) - 1; *(a + i) == ' '; i--)
+            *(a+i) = '\0';
+    }
     return a;
 }
