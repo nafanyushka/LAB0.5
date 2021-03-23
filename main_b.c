@@ -58,47 +58,56 @@ void print(Node* first){
 void factoring(Node* a, Node* chet, Node* ne_chet){
     Node* List_chet = chet;
     Node* List_ne_chet = ne_chet;
-    Node* last_space = NULL;
+    Node* flag_c = NULL,* flag_nc = NULL;
     char helper1 = ' ', helper = ' ';
     for(Node* p = a; p->next != NULL; p = p->next){
         if((((int)p->data)%2 == 1 && (48 <= (int)p->data && (int)p->data <= 57))){
             List_ne_chet->data = p->data;
             helper = List_ne_chet->data;
+            if(List_ne_chet->data != ' ' && (p->next->data == ' ' || p->next->next == NULL)){
+                flag_nc = List_ne_chet;
+            }
             List_ne_chet->next = (Node*)malloc(sizeof(Node));
-            if((p->next)->data == ' ')
-                last_space = List_ne_chet;
             List_ne_chet = List_ne_chet->next;
         }
         if((((int)p->data)%2 == 0) && (48 <= (int)p->data && (int)p->data <= 57)) {
             List_chet->data = p->data;
             helper1 = List_chet->data;
+            if(List_chet->data != ' ' && (p->next->data == ' ' || p->next->next == NULL)){
+                flag_c = List_chet;
+            }
             List_chet->next = (Node*)malloc(sizeof(Node));
-            if((p->next)->data == ' ')
-                last_space = List_chet;
             List_chet = List_chet->next;
         }
         if(p->data == ' ' && helper1 != ' ') {
             List_chet->data = ' ';
             helper1 = List_chet->data;
-//            last_space = List_chet;
             List_chet->next = (Node *) malloc(sizeof(Node));
             List_chet = List_chet->next;
         }
         if(p->data == ' ' && helper != ' '){
             List_ne_chet->data = ' ';
             helper = List_ne_chet->data;
-//            last_space = List_ne_chet;
             List_ne_chet->next = (Node*)malloc(sizeof(Node));
             List_ne_chet = List_ne_chet->next;
         }
     }
+    List_ne_chet->data = '\0';
     List_ne_chet->next = NULL;
     List_chet->next = NULL;
-    if(last_space != NULL) {
-    Node* anal = last_space->next;
-        if (anal->next->next == NULL) {
-            free(last_space->next);
-            last_space->next->next = NULL;
+    List_chet->data = '\0';
+    if(flag_c != NULL){
+//        printf("\n CHAR = %c \n", flag->data);
+        if(flag_c->next->data == ' ' && flag_c->next->next->data == '\0'){
+            free(flag_c->next->next);
+            flag_c->next->next = NULL;
+        }
+    }
+    if(flag_nc != NULL){
+//        printf("\n CHAR = %c \n", flag->data);
+        if(flag_nc->next->data == ' ' && flag_nc->next->next->data == NULL){
+            free(flag_nc->next->next);
+            flag_nc->next->next = NULL;
         }
     }
 
@@ -169,4 +178,5 @@ void freestrct(Node* a){
         if(helper != NULL)
             free(helper);
     }
+    free(a);
 }
