@@ -12,7 +12,7 @@ struct Node{
 //                          FUNCS
 char* get_String();
 void print(Node*);
-void factoring(Node* a, Node* chet, Node* ne_chet);
+void factoring(Node* a, Node** chet, Node** ne_chet);
 Node* strict(char*);
 void freestrct(Node*);
 //                          FUNCS
@@ -21,8 +21,8 @@ int main(){
     char* a = (char*)malloc(19);
     while(*a != EOF) {
         Node * list = NULL;
-        Node * chet = (Node*)malloc(sizeof(Node));
-        Node * ne_chet = (Node*)malloc(sizeof(Node));
+        Node * chet = (Node*)calloc(1, sizeof(Node));
+        Node * ne_chet = (Node*)calloc(1, sizeof(Node));
         printf("Your string: ");
         a = get_String();
         if(*a == '\0') {
@@ -34,12 +34,12 @@ int main(){
         printf("Only digits: ");
         print(list);
         printf("\nChet and Ne_chet: \nChet: ");
-        factoring(list, chet, ne_chet);
+        factoring(list, &chet, &ne_chet);
         print(chet);
         printf("Ne_chet: ");
         print(ne_chet);
         printf("\n");
-        freestrct(list);
+//        freestrct(list);
         freestrct(chet);
         freestrct(ne_chet);
     }
@@ -55,62 +55,70 @@ void print(Node* first){
     printf("\"\n");
 }
 
-void factoring(Node* a, Node* chet, Node* ne_chet){
-    Node* List_chet = chet;
-    Node* List_ne_chet = ne_chet;
+void factoring(Node* a, Node** chet, Node** ne_chet){
+    Node* clspace = NULL;
+    Node* List_chet = *chet;
+    Node* List_ne_chet = *ne_chet;
     Node* flag_c = NULL,* flag_nc = NULL;
     char helper1 = ' ', helper = ' ';
-    for(Node* p = a; p->next != NULL; p = p->next){
+    for(Node* p = a; p->next != NULL; p = p->next) {
+        if(clspace != NULL){
+            if (clspace->next->data == p->data && clspace->data == ' ') {
+            free(clspace);
+        }
+    }
         if((((int)p->data)%2 == 1 && (48 <= (int)p->data && (int)p->data <= 57))){
-            List_ne_chet->data = p->data;
-            helper = List_ne_chet->data;
-            if(List_ne_chet->data != ' ' && (p->next->data == ' ' || p->next->next == NULL)){
-                flag_nc = List_ne_chet;
-            }
-            List_ne_chet->next = (Node*)malloc(sizeof(Node));
+            List_ne_chet->next = p;
             List_ne_chet = List_ne_chet->next;
+            helper = List_ne_chet->data;
         }
         if((((int)p->data)%2 == 0) && (48 <= (int)p->data && (int)p->data <= 57)) {
-            List_chet->data = p->data;
-            helper1 = List_chet->data;
-            if(List_chet->data != ' ' && (p->next->data == ' ' || p->next->next == NULL)){
-                flag_c = List_chet;
-            }
-            List_chet->next = (Node*)malloc(sizeof(Node));
+            List_chet->next = p;
             List_chet = List_chet->next;
+            helper1 = List_chet->data;
         }
         if(p->data == ' ' && helper1 != ' ') {
-            List_chet->data = ' ';
-            helper1 = List_chet->data;
             List_chet->next = (Node *) malloc(sizeof(Node));
+            flag_c = List_chet;
             List_chet = List_chet->next;
+            List_chet->data = ' ';
+            helper1 = ' ';
         }
         if(p->data == ' ' && helper != ' '){
-            List_ne_chet->data = ' ';
-            helper = List_ne_chet->data;
-            List_ne_chet->next = (Node*)malloc(sizeof(Node));
+            List_ne_chet->next = (Node *) malloc(sizeof(Node));
+            flag_nc = List_ne_chet;
             List_ne_chet = List_ne_chet->next;
+            List_ne_chet->data = ' ';
+            helper = ' ';
+        }
+        if(p->data == ' '){
+            clspace = p;
         }
     }
-    List_ne_chet->data = '\0';
+    List_ne_chet->next = malloc(sizeof (Node));
+    List_chet->next = malloc(sizeof (Node));
+    List_ne_chet = List_ne_chet->next;
+    List_chet = List_chet->next;
     List_ne_chet->next = NULL;
     List_chet->next = NULL;
-    List_chet->data = '\0';
-    if(flag_c != NULL){
-//        printf("\n CHAR = %c \n", flag->data);
-        if(flag_c->next->data == ' ' && flag_c->next->next->data == '\0'){
-            free(flag_c->next->next);
-            flag_c->next->next = NULL;
-        }
-    }
+    List_chet = *chet;
+    List_ne_chet = *ne_chet;
+    *chet = (*chet)->next;
+    *ne_chet = (*ne_chet)->next;
+    free(List_chet);
+    free(List_ne_chet);
     if(flag_nc != NULL){
-//        printf("\n CHAR = %c \n", flag->data);
-        if(flag_nc->next->data == ' ' && flag_nc->next->next->data == NULL){
+        if(flag_nc->next->next->next == NULL){
             free(flag_nc->next->next);
             flag_nc->next->next = NULL;
         }
     }
-
+    if(flag_c != NULL){
+        if(flag_c->next->next->next == NULL){
+            free(flag_c->next->next);
+            flag_c->next->next = NULL;
+        }
+    }
 
 }
 
