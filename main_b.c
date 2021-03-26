@@ -57,6 +57,7 @@ void print(Node* first){
 
 void factoring(Node* a, Node** chet, Node** ne_chet){
     Node* clspace = NULL;
+    Node* clsnull = NULL;
     Node* List_chet = *chet;
     Node* List_ne_chet = *ne_chet;
     Node* flag_c = NULL,* flag_nc = NULL;
@@ -67,12 +68,17 @@ void factoring(Node* a, Node** chet, Node** ne_chet){
             free(clspace);
         }
     }
+        if(clsnull != NULL) {
+            if (clsnull->next->data == p->data && clsnull->data == ' ') {
+                free(clsnull);
+            }
+        }
         if((((int)p->data)%2 == 1 && (48 <= (int)p->data && (int)p->data <= 57))){
             List_ne_chet->next = p;
             List_ne_chet = List_ne_chet->next;
             helper = List_ne_chet->data;
         }
-        if((((int)p->data)%2 == 0) && (48 <= (int)p->data && (int)p->data <= 57)) {
+        if((((int)p->data)%2 == 0) && (49 <= (int)p->data && (int)p->data <= 57)) {
             List_chet->next = p;
             List_chet = List_chet->next;
             helper1 = List_chet->data;
@@ -90,6 +96,15 @@ void factoring(Node* a, Node** chet, Node** ne_chet){
             List_ne_chet = List_ne_chet->next;
             List_ne_chet->data = ' ';
             helper = ' ';
+        }
+        if((helper1 == ' ') && (p->data == '0')){
+            clsnull = p;
+        }
+
+        if(helper1 != ' ' && p->data == '0'){
+            List_chet->next = p;
+            List_chet = List_chet->next;
+            helper1 = List_chet->data;
         }
         if(p->data == ' '){
             clspace = p;
